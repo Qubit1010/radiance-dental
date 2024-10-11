@@ -1,26 +1,20 @@
 import mongoose from "mongoose";
 
-
 const connectDB = async () => {
-  mongoose.connection.on("connected", () => console.log("Database Connected"));
+  // mongoose.connection.on("connected", () => console.log("Database Connected"));
+  // await mongoose.connect(
+  //   "process.env.MONGODB_URI"
+  // );
 
-  await mongoose.connect(
-    "mongodb+srv://rait:triangg@cluster0.hjyco.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-  );
-
-  // try {
-  //   await mongoose.connect(`${process.env.MONGODB_URI}`);
-  // } catch (error) {
-  //   console.log(error)
-  // }
- 
-  //  await mongoose.connect(
-  //     process.env.MONGODB_URL,
-  //     (err) => {
-  //      if(err) console.log(err)
-  //      else console.log("mongdb is connected");
-  //     }
-  //   );
+  // Use connect method to connect to the server
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    const conn = await mongoose.connect(process.env.MONGODB_URI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
 
   // console.log(process.env.MONGODB_URI);
 };
