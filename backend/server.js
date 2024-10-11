@@ -20,7 +20,7 @@ app.use("/api/admin", adminRouter);
 // localhost:4000/api/admin/add-doctor
 
 app.get("", (req, res) => {
-  res.send("API WORKING !");
+  res.send("API!");
 });
 // console.log(process.env.MONGODB_URI)
 app.listen(port, () => console.log("Server Started", port));

@@ -9,6 +9,7 @@ const addDoctor = async (req, res) => {
     const {
       name,
       email,
+      image,
       password,
       speciality,
       degree,
@@ -64,7 +65,7 @@ const addDoctor = async (req, res) => {
     const doctorData = {
       name,
       email,
-    //   image,
+      image,
       password: hashedPassword,
       speciality,
       degree,
@@ -72,15 +73,15 @@ const addDoctor = async (req, res) => {
       about,
       fees,
       address: JSON.parse(address),
-      date: Date.now()
+      date: Date.now(),
     };
- 
+
     const newDoctor = new doctorModel(doctorData);
-    console.log(newDoctor)
+    console.log(newDoctor);
     await newDoctor.save();
 
     res.json({ success: true, message: "Doctor Added" });
-  
+
     // console.log(
     //   {
     //     name,
