@@ -131,7 +131,7 @@ const AddDoctor = () => {
                 value={password}
                 className="border rounded px-3 py-2"
                 type="password"
-                placeholder="Email"
+                placeholder="Password"
                 required
               />
             </div>
