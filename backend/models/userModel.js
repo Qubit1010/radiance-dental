@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
   gender: { type: String, default: "Not Selected" },
   dob: { type: String, default: "Not Selected" },
   phone: { type: String, default: "0000-000-0" },
+  date: { type: Number, required: true },
 });
 
 const userModel = mongoose.models.user || mongoose.model("user", userSchema);

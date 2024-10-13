@@ -21,7 +21,27 @@ const AdminContextProvider = (props) => {
       );
       if (data.success) {
         setDoctors(data.doctors);
-        console.log(data.doctors);
+        // console.log(data.doctors);
+      } else {
+        return toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error.message);
+    }
+  };
+
+  const changeAvailability = async (docId) => {
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/admin/change-availability",
+        { docId },
+        { headers: { aToken } }
+      );
+      if (data.success) {
+        // console.log(data);
+        toast.success(data.message);
+        getAllDoctors();
       } else {
         return toast.error(data.message);
       }
@@ -37,6 +57,7 @@ const AdminContextProvider = (props) => {
     backendUrl,
     doctors,
     getAllDoctors,
+    changeAvailability,
   };
 
   return (
