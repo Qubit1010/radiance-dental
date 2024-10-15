@@ -6,6 +6,7 @@ import userModel from "../models/userModel.js";
 import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
 import razorpay from "razorpay";
+import Stripe from "stripe";
 
 // API to register user
 const registerUser = async (req, res) => {
@@ -213,13 +214,111 @@ const cancelAppointment = async (req, res) => {
   }
 };
 
-const razorpayInstance = new razorpay({
-  key_id: "",
-  key_secret: "",
-});
-
 // API to make payment of appointment using razorpay
-const paymentRazorpay = async (req, res) => {};
+// const razorpayInstance = new razorpay({
+//   key_id: "",
+//   key_secret: "",
+// });
+
+// const paymentRazorpay = async (req, res) => {
+//   try {
+//     const { appointmentId } = req.body;
+//     const appointmentData = await appointmentModel.findById(appointmentId);
+
+//     if (!appointmentData || appointmentData.cancelled) {
+//       return res.json({
+//         success: false,
+//         message: "Appointment Cancelled or not found",
+//       });
+//     }
+//     // creating options for razorpay payment
+//     const options = {
+//       amount: appointmentData.amount * 100,
+//       currency: process.env.CURRENCY,
+//       receipt: appointmentId,
+//       appointmentData,
+//     };
+//     // creation of an order
+//     // const order = await razorpayInstance.orders.create(options);
+
+//     // res.json({ success: true, order });
+//     res.json({ success: true, options });
+//   } catch (error) {
+//     console.log(error);
+//     res.json({ success: false, message: error.message });
+//   }
+// };
+
+// const verifyRazorpay = async (req, res) => {
+//   try {
+//     const { razorpay_order_id } = req.body;
+//     const orderInfo = await razorpayInstance.orders.fetch(razorpay_order_id);
+//     console.log(orderInfo);
+//     if (orderInfo.status === "paid") {
+//       await appointmentModel.findByIdAndUpdate(orderInfo.receipt, {
+//         payment: true,
+//       });
+//       res.json({ success: true, message: "Payment Successful" });
+//     } else {
+//       res.json({ success: false, message: "Payment Failed" });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res.json({ success: false, message: error.message });
+//   }
+// };
+
+// API to make payment of appointment using stripe
+const getCheckoutSession = async (req, res) => {
+  try {
+    // get currently booked appointment
+    const { userId, appointmentId } = req.body;
+    const appointmentData = await appointmentModel.findById(appointmentId);
+
+    if (!appointmentData || appointmentData.cancelled) {
+      return res.json({
+        success: false,
+        message: "Appointment Cancelled or not found",
+      });
+    }
+
+    const stripe = await Stripe(process.env.STRIPE_SECRET_KEY);
+    const clientReferenceId = String(appointmentData.docData._id);
+
+    // create stripe checkout session
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      success_url: `${process.env.CLIENT_SITE_URL}/my-appointments`,
+      cancel_url: `${req.protocol}://${req.get("host")}/my-appointments`,
+      customer_email: appointmentData.userData.email,
+      client_reference_id: clientReferenceId,
+      line_items: [
+        {
+          price_data: {
+            currency: "usd",
+            unit_amount: appointmentData.amount * 100,
+            product_data: {
+              name: appointmentData.docData.name,
+              description: appointmentData.docData.speciality,
+              images: [appointmentData.docData.image],
+            },
+          },
+          quantity: 1,
+        },
+      ],
+    });
+
+    await appointmentModel.findByIdAndUpdate(appointmentId, {
+      payment: true,
+    });
+
+    res.json({ success: true, message: "Successfully paid", session });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
 
 export {
   registerUser,
@@ -229,4 +328,7 @@ export {
   bookAppointment,
   listAppointment,
   cancelAppointment,
+  // paymentRazorpay,
+  // verifyRazorpay,
+  getCheckoutSession,
 };

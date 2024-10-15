@@ -2,8 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const MyAppointments = () => {
+  const navigate = useNavigate();
   const { backendUrl, token, getDoctorsData } = useContext(AppContext);
   const [appointments, setAppointments] = useState([]);
   const months = [
@@ -66,6 +68,89 @@ const MyAppointments = () => {
     }
   };
 
+  // const initPay = (order) => {
+  //   // <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  //   const options = {
+  //     // "key": import.meta.env.VITE_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
+  //     //     "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+  //     //     "currency": order.currency,
+  //     //     "name": "Appointment Payment ", //your business name
+  //     //     "description": "Appointment Payment ",
+  //     //     "image": "https://example.com/your_logo",
+  //     //     "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+  //     //     "receipt": order.receipt
+  //     handler: async (response) => {
+  //       console.log(response);
+
+  //       try {
+  //         const { data } = await axios.post(
+  //           backendUrl + "/api/user/verify-razorpay",
+  //           { response },
+  //           { headers: { token } }
+  //         );
+  //         if (data.success) {
+  //           // console.log(data);
+  //           getUserAppointments();
+  //           navigate("/");
+  //         } else {
+  //           return toast.error(data.message);
+  //         }
+  //       } catch (error) {
+  //         toast.error(error.message);
+  //         console.log(error.message);
+  //       }
+  //     },
+  //   };
+
+  //   // const rzp = new window.Razorpay(options)
+  //   // rzp.open()
+  // };
+
+  // const appointmentRazorpay = async (appointmentId) => {
+  //   try {
+  //     const { data } = await axios.post(
+  //       backendUrl + "/api/user/payment-razorpay",
+  //       { appointmentId },
+  //       { headers: { token } }
+  //     );
+  //     if (data.success) {
+  //       // razorpay Web-Integration steps
+  //       // toast.success(data.message);
+  //       // initPay(data.order)
+
+  //       console.log(data);
+  //     } else {
+  //       return toast.error(data.message);
+  //     }
+  //   } catch (error) {
+  //     toast.error(error.message);
+  //     console.log(error.message);
+  //   }
+  // };
+
+  const bookingHandler = async (appointmentId) => {
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/user/checkout-session",
+        { appointmentId },
+        { headers: { token } }
+      );
+      if (data.success) {
+        // toast.success(data.message);
+        if (data.session.url) {
+          window.location.href = data.session.url;
+        }
+        console.log(data);
+      } else {
+        return toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error.message);
+    }
+  };
+
   useEffect(() => {
     if (token) {
       getUserAppointments();
@@ -107,12 +192,21 @@ const MyAppointments = () => {
             </div>
             <div></div>
             <div className="flex flex-col gap-2 justify-end">
-              {!item.cancelled && (
-                <button className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300">
+              {!item.cancelled && item.payment && (
+                <button className="text-sm text-stone-500 bg-indigo-50 text-center sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300">
+                  Paid
+                </button>
+              )}
+
+              {!item.cancelled && !item.payment && (
+                <button
+                  onClick={() => bookingHandler(item._id)}
+                  className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300"
+                >
                   Pay Online
                 </button>
               )}
-              {!item.cancelled && (
+              {!item.cancelled && !item.payment && (
                 <button
                   onClick={() => cancelAppointment(item._id)}
                   className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300"
