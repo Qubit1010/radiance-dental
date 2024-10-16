@@ -5,6 +5,7 @@ import profile_pic from './profile_pic.png'
 import contact_image from './contact_image.png'
 import about_image from './about_image.png'
 import logo from './logo.svg'
+import logo_radiance from './Radiance-logo.png'
 import dropdown_icon from './dropdown_icon.svg'
 import menu_icon from './menu_icon.svg'
 import cross_icon from './cross_icon.png'
@@ -36,6 +37,13 @@ import General_physician from './General_physician.svg'
 import Gynecologist from './Gynecologist.svg'
 import Neurologist from './Neurologist.svg'
 import Pediatricians from './Pediatricians.svg'
+import Physician from './medical-assistance.png'
+import Fetus from './fetus.png'
+import dermatologist from './dermatology.png'
+import pediatricians from './pediatrician.png'
+import neurologist from './neurologist.png'
+import gastroenterologist from './organ.png'
+
 
 
 export const assets = {
@@ -55,33 +63,35 @@ export const assets = {
     dropdown_icon,
     upload_icon,
     stripe_logo,
-    razorpay_logo
+    razorpay_logo,
+    logo_radiance,
+    Physician
 }
 
 export const specialityData = [
     {
         speciality: 'General physician',
-        image: General_physician
+        image: Physician
     },
     {
         speciality: 'Gynecologist',
-        image: Gynecologist
+        image: Fetus
     },
     {
         speciality: 'Dermatologist',
-        image: Dermatologist
+        image: dermatologist
     },
     {
         speciality: 'Pediatricians',
-        image: Pediatricians
+        image: pediatricians
     },
     {
         speciality: 'Neurologist',
-        image: Neurologist
+        image: neurologist
     },
     {
         speciality: 'Gastroenterologist',
-        image: Gastroenterologist
+        image: gastroenterologist
     },
 ]
 
