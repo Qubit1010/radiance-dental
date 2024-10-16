@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 
+// eslint-disable-next-line react/prop-types
 const RelatedDoctors = ({ speciality, docId }) => {
   const { doctors } = useContext(AppContext);
   const [relDoc, setRelDoc] = useState([]);

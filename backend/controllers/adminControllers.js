@@ -80,24 +80,11 @@ const addDoctor = async (req, res) => {
     };
 
     const newDoctor = new doctorModel(doctorData);
-    console.log(newDoctor);
+    // console.log(newDoctor);
     await newDoctor.save();
 
     res.json({ success: true, message: "Doctor Added" });
 
-    // console.log(
-    //   {
-    //     name,
-    //     email,
-    //     password,
-    //     speciality,
-    //     degree,
-    //     experience,
-    //     about,
-    //     fees,
-    //     address,
-    //   },
-    // );
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -187,7 +174,7 @@ const adminDashboard = async (req, res) => {
       latestAppointments: appointments.reverse().slice(0, 5),
     };
 
-    console.log(dashData)
+    // console.log(dashData)
 
     res.json({ success: true, dashData });
   } catch (error) {

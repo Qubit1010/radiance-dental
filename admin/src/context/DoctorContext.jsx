@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { createContext, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -117,7 +118,6 @@ const DoctorContextProvider = (props) => {
     getProfileData,
     profileData,
     setProfileData,
-    getProfileData
   };
   return (
     <DoctorContext.Provider value={value}>
