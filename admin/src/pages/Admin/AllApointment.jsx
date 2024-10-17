@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { AdminContext } from "../../context/AdminContext";
