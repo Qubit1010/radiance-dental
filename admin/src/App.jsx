@@ -25,18 +25,27 @@ const App = () => {
       <NavBar />
       <div className="flex items-start">
         <Sidebar />
-        <Routes>
-          {/* Admin ROute */}
-          <Route path="/" element={<></>} />
-          <Route path="/admin-dashboard" element={<Dashboard />} />
-          <Route path="/all-appointments" element={<AllApointment />} />
-          <Route path="/add-doctor" element={<AddDoctor />} />
-          <Route path="/doctor-list" element={<DoctorsList />} />
-          {/* Doctor Route */}
-          <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
-          <Route path="/doctor-appointments" element={<DoctorAppointment />} />
-          <Route path="/doctor-profile" element={<DoctorProfile />} />
-        </Routes>
+        {aToken ? (
+          <Routes>
+            {/* // Admin ROute */}
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/admin-dashboard" element={<Dashboard />} />
+            <Route path="/all-appointments" element={<AllApointment />} />
+            <Route path="/add-doctor" element={<AddDoctor />} />
+            <Route path="/doctor-list" element={<DoctorsList />} />
+          </Routes>
+        ) : (
+          // {/* Doctor Route */}
+          <Routes>
+            <Route path="/" element={<DoctorDashboard />} />
+            <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
+            <Route
+              path="/doctor-appointments"
+              element={<DoctorAppointment />}
+            />
+            <Route path="/doctor-profile" element={<DoctorProfile />} />
+          </Routes>
+        )}
       </div>
     </div>
   ) : (
