@@ -8,10 +8,9 @@ const Footer = () => {
         <div>
           <img className="mb-5 w-32" src={assets.logo_radiance} alt="" />
           <p className="w-full md:w-2/3 text-gray-600 leading-6">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry&apos;s standard dummy
-            text ever since the 1500s, when an unknown printer took a galley of
-            type and scrambled it to make a type specimen book.
+            Radiance Clinic is a leading U.S.-based healthcare facility
+            dedicated to providing exceptional patient care through cutting-edge
+            techniques and state-of-the-art medical technology.
           </p>
         </div>
         {/* Center-Section */}
@@ -36,7 +35,9 @@ const Footer = () => {
       {/* Copyright Text */}
       <div>
         <hr />
-        <p className="py-5 text-sm text-center ">Copyright © 2024 Radiance - All Right Reserved.</p>
+        <p className="py-5 text-sm text-center ">
+          Copyright © 2024 Radiance - All Right Reserved.
+        </p>
       </div>
     </div>
   );
