@@ -24,7 +24,7 @@ const App = () => {
       <ToastContainer />
       <NavBar />
       <div className="flex items-start">
-        <Sidebar />
+        <Sidebar /> 
         {aToken ? (
           <Routes>
             {/* // Admin ROute */}
